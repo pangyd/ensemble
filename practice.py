@@ -26,21 +26,27 @@ from sklearn.ensemble import BaggingClassifier
 from xgboost import XGBClassifier
 import pickle
 
-xgb_params = {"learning_rate": [0.01, 0.05, 0.1, 0.2, 0.3],
-              "max_depth": [10, 20, 30, 40, 50],
-              "n_estimators": [100, 300, 500, 700, 900],
-              "subsample": [0.1, 0.3, 0.5, 0.7, 0.9]}
+def search_bagging():
+    xgb_params = {"learning_rate": [0.01, 0.05, 0.1, 0.2, 0.3],
+                  "max_depth": [10, 20, 30, 40, 50],
+                  "n_estimators": [100, 300, 500, 700, 900],
+                  "subsample": [0.1, 0.3, 0.5, 0.7, 0.9]}
 
-xgb = XGBClassifier()
+    xgb = XGBClassifier()
 
-estmator = RandomizedSearchCV(estimator=xgb, param_distributions=xgb_params, n_iter=2)
+    estmator = RandomizedSearchCV(estimator=xgb, param_distributions=xgb_params, n_iter=2)
 
-estimator = BaggingClassifier(base_estimator=estmator, n_estimators=3)
+    estimator = BaggingClassifier(base_estimator=estmator, n_estimators=3)
 
-print("开始训练")
-estimator.fit(x, y)
+    print("开始训练")
+    estimator.fit(x, y)
 
-with open("bagging.dat", "wb") as model:
-    pickle.dump(estimator, model)
-print("训练结束")
+    with open("bagging.dat", "wb") as model:
+        pickle.dump(estimator, model)
+    print("训练结束")
 
+
+from sympy import *
+def equation():
+    x = Symbol("x")
+    print(solve([(x - (x / 2 + 2)) - ((x - (x / 2 + 2)) / 2 - 2) - 5], [x]))

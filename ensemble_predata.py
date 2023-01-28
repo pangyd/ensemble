@@ -2,6 +2,9 @@ import logging
 import pandas as pd
 import numpy as np
 import random
+import warnings
+
+warnings.filterwarnings("ignore")
 
 
 # logging.basicConfig(filename="/suncere/pyd/xgb/all_feature_data/xgb_bagging.log", filemode="a",
@@ -10,7 +13,7 @@ import random
 #data = features.data
 data = pd.read_csv("D://data_judgement/out_features/test汾渭平原.csv", index_col=0)
 data.index = range(len(data))
-print(data.columns)
+# print(data.columns)
 data.drop(labels=["城市", "站点名称", "站点编号", "pm10mark"], axis=1, inplace=True)
 data = data.replace([-np.inf, np.inf], np.nan).dropna(axis=0)
 
