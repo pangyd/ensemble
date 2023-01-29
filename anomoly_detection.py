@@ -52,3 +52,6 @@ def knn(x_train, y_train):
     print("召回率：", len(y[(y["y_test"] == y["y_pred"]) & (y["y_pred"] == 1)]) / len(y[y["y_pred"] == 1]))
 
 
+# y_train = test_f["pm25mark"]
+# x_train = test_f.drop(labels=["pm25mark"], axis=1)
+# knn(x_train, y_train)

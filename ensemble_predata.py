@@ -11,14 +11,14 @@ warnings.filterwarnings("ignore")
 #                     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 #data = features.data
-data = pd.read_csv("D://data_judgement/out_features/test汾渭平原.csv", index_col=0)
+data = pd.read_csv("D://data_judgement/out_features/test长三角地区.csv", index_col=0)
 data.index = range(len(data))
 # print(data.columns)
 data.drop(labels=["城市", "站点名称", "站点编号", "pm10mark"], axis=1, inplace=True)
 data = data.replace([-np.inf, np.inf], np.nan).dropna(axis=0)
 
 # 测试集
-time1 = data[data["时间"] >= "2020-08-15 23:00:00"]
+time1 = data[data["时间"] >= "2020-08-01 23:00:00"]
 test_f = data[data["时间"].isin(list(time1["时间"]))]
 
 data.drop(labels=["时间"], axis=1, inplace=True)
