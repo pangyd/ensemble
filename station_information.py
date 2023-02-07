@@ -3,8 +3,8 @@ import random
 
 pd.set_option("display.max_rows", None)
 # pd.set_option('display.unicode.ambiguous_as_wide', True)
-pd.set_option('display.unicode.east_asian_width', True)
-pd.set_option("display.width", 180)
+pd.set_option('display.unicode.east_asian_width', True)   # 列名对齐
+pd.set_option("display.width", 180)   # 横向最多显示多少个字符
 
 #province = ["河北", "陕西", "山西", "山东", "河南", "四川", "江西"]
 #province = ["山东"]

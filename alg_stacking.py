@@ -56,17 +56,16 @@ def sklearn_stacking():
         f"预测集中预测准确的比例：{len(y_test_pred[(y_test_pred['y_test'] == y_test_pred['y_pred']) & (y_test_pred['y_test'] == 1)]) / len(y_test_pred[y_test_pred['y_pred'] == 1])}")
 
 
-def stacking(alg, x_train_copy, y_train, ind):
+def diy_stacking(alg, x_train, y_train, ind):
+    """
+    ind: 训练集分成五分的索引的列表
+    """
     prediction = pd.DataFrame([0] * len(y_train), index=y_train.index, columns=["y_pred"])
 
     for i in ind:
-        middle_pred = pd.DataFrame([0] * len(x_train_copy), index=x_train_copy.index, columns=["y_pred"])
-        x_train_p, y_train_p = x_train_copy.drop(i, axis=0), y_train.drop(i, axis=0)
-        x_test_p = x_train_copy.loc[i, :]
-
-        # y_train_p = train["pm25mark"]
-        # x_train_p = train.drop(labels=["pm25mark"], axis=1)
-        # x_test_p = test.drop(labels=["pm25mark"], axis=1)
+        middle_pred = pd.DataFrame([0] * len(x_train), index=x_train.index, columns=["y_pred"])
+        x_train_p, y_train_p = x_train.drop(i, axis=0), y_train.drop(i, axis=0)
+        x_test_p = x_train.loc[i, :]
 
         # 选择分类器
         if alg == "xgboost":
@@ -99,10 +98,9 @@ def stacking(alg, x_train_copy, y_train, ind):
 def random_ind(num_stack, x_train, y_train):
     y_train = pd.DataFrame(y_train.values, columns=["y_train"], index=y_train.index)
     y_train_new = pd.DataFrame([0] * len(y_train), columns=["new"], index=y_train.index)
-    ind = []
+    ind = []   # 每次划分的索引
     for i in range(num_stack):
         data_index = x_train.index
-
         random_index = random.sample(list(data_index), int(0.2 * len(data_index)))
         x_train.drop(labels=list(random_index), axis=0, inplace=True)  # 删除已选中的索引
         y_train_new["new"][random_index] = y_train["y_train"][random_index]  # 保持与y_pred数量一致
@@ -121,10 +119,10 @@ if __name__ == "__main__":
     ind, y_train_new = random_ind(num_stack, x_train, y_train)
 
     # xgboost
-    single_pred_1 = stacking("xgboost", x_train_copy, y_train, ind)
+    single_pred_1 = diy_stacking("xgboost", x_train_copy, y_train, ind)
     all_pred["pred1"] = single_pred_1["y_pred"]
     # lightgbm
-    single_pred_2 = stacking("lightgbm", x_train_copy, y_train, ind)
+    single_pred_2 = diy_stacking("lightgbm", x_train_copy, y_train, ind)
     all_pred["pred2"] = single_pred_2["y_pred"]
     print(all_pred.head(10))
     print(len(all_pred))
