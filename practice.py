@@ -110,7 +110,11 @@ from sklearn.preprocessing import Binarizer, OneHotEncoder
 
 
 if __name__ == '__main__':
-    print(round(1.111255, 4))
+    w = np.random.randint(0, 2, (5, 5), dtype=np.uint8)
+    w = pd.DataFrame(w, index=range(len(w)), columns=["a", "b", "c", "d", "e"])
+    w["f"] = w.sum(axis=1).apply(lambda x: 1 if x > 2 else 0)
+    # x["f"] = x.sum(axis=1)
+    print(w)
 
 
 
